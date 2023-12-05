@@ -7,6 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using System.Security.Cryptography.X509Certificates;
+using Mongo_revamp_agenet.RevampOper;
+using ThirdParty.Json.LitJson;
+using Mongo_revamp_agenet.MongoEntity;
+using Serilog;
+using System.Diagnostics;
+using AnkurJfrogLibSQLAgent;
 
 namespace Mongo_revamp_agenet
 {
@@ -14,69 +21,67 @@ namespace Mongo_revamp_agenet
     {
         static void Main(string[] args)
         {
+            //Logger the every Line For 
+            Log.Logger = new LoggerConfiguration()
+               .WriteTo.Console()
+                 .WriteTo.File(
+                    @"C:\Users\ankur\Desktop\Catchckankurresultruntime\log.txt",
+                    rollingInterval: RollingInterval.Day, 
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                    fileSizeLimitBytes: null,
+                    retainedFileCountLimit: null,
+                    shared: true,
+                    flushToDiskInterval: TimeSpan.FromSeconds(1))
+               .CreateLogger();
+            var fillDataStopwatch = Stopwatch.StartNew();   
+
             string sqlConnectionString = "server=AVINEXSERVER6;database=CatCheckPro;Integrated Security=false;User ID=CCAdmin;Password=Catalyst1*;Trusted_Connection=No;";
+            var res = RevampOperationAnkur.RevampSQLAgentAnkur(sqlConnectionString, "CC_Revamp_uspGetUMData", 3081, "5893209,5893210");
+            IEnumerable<MongoRevampEntity> revampData = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<MongoRevampEntity>>(res, new DateTimeToMillisecondsConverter());
+            fillDataStopwatch.Stop();
+            Log.Information("Data fill operation took: {ElapsedMilliseconds} ms", fillDataStopwatch.ElapsedMilliseconds);
+           
+            var pushTOMongoStopwatch = Stopwatch.StartNew();
 
-            string mongoConnectionString = "mongodb://10.2.10.5:27017/";
-            string mongoDatabaseName = "Um_test_cycle_sql_to_mongodb";
-            string mongoCollectionName = "cycle_01_sql_to_mongo";
+            string mongoConnectionString = "mongodb://10.2.10.19:27017/";
+            string mongoDatabaseName = "Um_test_cycle_sql_";
+            string mongoCollectionName = "cycle_01";
+            MongoClient mongoClient = new MongoClient(mongoConnectionString);
+            IMongoDatabase mongoDatabase = mongoClient.GetDatabase(mongoDatabaseName);
+            IMongoCollection<MongoRevampEntity> mongoCollection = mongoDatabase.GetCollection<MongoRevampEntity>(mongoCollectionName);
+            mongoCollection.InsertMany(revampData);
+            Log.Information("Data push to MongoDB operation took: {ElapsedMilliseconds} ms", pushTOMongoStopwatch.ElapsedMilliseconds);
 
+            pushTOMongoStopwatch.Stop();
+            
+            
+           
 
-            using (SqlConnection sqlConnection = new SqlConnection(sqlConnectionString))
-            {
-                sqlConnection.Open();
+            Log.CloseAndFlush();
 
-                SqlCommand sqlCommand = new SqlCommand("CC_Revamp_uspGetUMData", sqlConnection);
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.Parameters.AddWithValue("@CycleId", 2694);
-                sqlCommand.Parameters.AddWithValue("@RDIds", "4216921,4216922");
+            Console.ReadLine(); 
 
-
-
-
-                SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-
-
-                MongoClient mongoClient = new MongoClient(mongoConnectionString);
-                IMongoDatabase mongoDatabase = mongoClient.GetDatabase(mongoDatabaseName);
-                IMongoCollection<BsonDocument> mongoCollection = mongoDatabase.GetCollection<BsonDocument>(mongoCollectionName);
-
-
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    var document = new BsonDocument
-                    {
-                        { "_id", Guid.NewGuid() },
-                        { "Sapunitno", row["Sapunitno"] as int? },
-                        { "Cycleno", row["Cycleno"] as long? },
-                        { "CycleId", row["CycleId"] as long? },
-                        { "DOS", row["DOS"] as int? },
-                        { "DOSDate", row["DOSDate"] as long? },
-                        { "CC_Fields_Defs_Id", row["CC_Fields_Defs_Id"] as int? },
-                        { "CSISValue", row["CSISValue"] as double? },
-                        { "ImputedValue", row["ImputedValue"] as double? },
-                        { "ImputedValueMetric", row["ImputedValueMetric"] as double? },
-                        { "ImputedValueImperial ", row["ImputedValueImperial"] as double? },
-                        { "CleansedValue", row["CleansedValue"] as double? },
-                        { "ValueMetric", row["ValueMetric"] as double? },
-                        { "ImportedValue ", row["ImportedValue"] as double? },
-                        { "CSISDataTypeId", row["CSISDataTypeId"] as long? },
-                        { " CSISTestRunId ", row["CSISTestRunId"] as long? },
-                        { "CSISPredictionId ", row["CSISPredictionId"] as long? },
-                        { "EOMobileLabId", row["EOMobileLabId"] as long? },
-                        { "ReportDataEntityId ", row["ReportDataEntityId"] as long? },
-                        { "IgnoreError ", row["IgnoreError"] as bool? },
-                        { "ApplicationId", row["ApplicationId"] as long? },
-                        { "Mode ", row["Mode"] as int? }
-
-
-                    };
-                    mongoCollection.InsertOne(document);
-                }
-                Console.WriteLine("Data transfer from SQL to MongoDB completed.");
-            }
         }
     }
+
+            
+        
+
+
+
+
+
+
+
+
+            
+             
+
+
+
+
+            
+        
+    
 }
 

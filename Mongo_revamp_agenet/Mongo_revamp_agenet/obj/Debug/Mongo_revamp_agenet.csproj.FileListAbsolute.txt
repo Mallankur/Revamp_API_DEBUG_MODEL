@@ -48,3 +48,16 @@ C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\o
 C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\obj\Debug\Mongo_revamp_agenet.csproj.CopyComplete
 C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\obj\Debug\Mongo_revamp_agenet.exe
 C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\obj\Debug\Mongo_revamp_agenet.pdb
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\Newtonsoft.Json.dll
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\Newtonsoft.Json.xml
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\Serilog.dll
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\Serilog.Sinks.Console.dll
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\Serilog.xml
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\Serilog.Sinks.Console.xml
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\AnkurJfrogLibSQLAgent.dll
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\AnkurJfrogLibSQLAgent.pdb
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\Serilog.Sinks.File.dll
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\Serilog.Sinks.File.pdb
+C:\Users\ankur\Desktop\Catcheck_Revamp\Mongo_revamp_agenet\Mongo_revamp_agenet\bin\Debug\Serilog.Sinks.File.xml
